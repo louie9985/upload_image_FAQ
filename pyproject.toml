@@ -1,0 +1,22 @@
+[project]
+name = "upload-image-faq"
+version = "0.1.0"
+description = "React and Django DRF app for image based FAQ generation and webhook upload."
+requires-python = ">=3.11"
+dependencies = [
+    "celery",
+    "django",
+    "django-cors-headers",
+    "djangorestframework",
+    "gunicorn",
+    "openai>=2.36.0",
+    "pillow",
+    "psycopg[binary]",
+    "python-dotenv",
+    "redis",
+    "requests",
+]
+
+[tool.uv]
+package = false
+

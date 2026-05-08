@@ -1,0 +1,90 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: upload_image_faq
+      POSTGRES_USER: upload_image_faq
+      POSTGRES_PASSWORD: change-me
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U upload_image_faq -d upload_image_faq"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://upload_image_faq:change-me@postgres:5432/upload_image_faq
+      REDIS_URL: redis://redis:6379/0
+      DJANGO_DEBUG: "false"
+      DJANGO_ALLOWED_HOSTS: "129.211.215.38,localhost,127.0.0.1"
+    volumes:
+      - media_data:/app/media
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    command: ["sh", "/app/docker/entrypoint-web.sh"]
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://upload_image_faq:change-me@postgres:5432/upload_image_faq
+      REDIS_URL: redis://redis:6379/0
+      DJANGO_DEBUG: "false"
+    volumes:
+      - media_data:/app/media
+    depends_on:
+      backend:
+        condition: service_started
+    command: ["uv", "run", "celery", "-A", "config", "worker", "-l", "info"]
+
+  beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://upload_image_faq:change-me@postgres:5432/upload_image_faq
+      REDIS_URL: redis://redis:6379/0
+      DJANGO_DEBUG: "false"
+    volumes:
+      - media_data:/app/media
+    depends_on:
+      backend:
+        condition: service_started
+    command: ["uv", "run", "celery", "-A", "config", "beat", "-l", "info"]
+
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.nginx
+    ports:
+      - "3456:80"
+    volumes:
+      - media_data:/var/www/media
+    depends_on:
+      - backend
+
+volumes:
+  pg_data:
+  redis_data:
+  media_data:
+

@@ -1,0 +1,39 @@
+# 依赖与包管理
+node_modules/
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+vendor/
+
+# 生成产物
+dist/
+build/
+.output/
+.nuxt/
+.build/
+coverage/
+
+# 开发环境
+.env
+.env.local
+.env.*.local
+.venv/
+node/
+
+# VCS 与 IDE
+.git/
+.github/
+.gitignore
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 二进制与大文件
+*.zip
+*.tar.gz
+*.exe
+*.bin
