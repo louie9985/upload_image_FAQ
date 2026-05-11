@@ -26,6 +26,7 @@ import 'antd/dist/reset.css';
 import './styles.css';
 import { api } from './api';
 import type { BatchJob, FaqDraft, GenerationItemDraft, LlmUsageSummary, ProgressState, UploadedImage, UploadRecord, User } from './types';
+import { UserManual } from './UserManual';
 
 const { Header, Content } = Layout;
 
@@ -114,6 +115,7 @@ function App() {
                 { key: 'history', label: '历史任务', children: <BatchHistory /> },
                 { key: 'records', label: '上传记录', children: <UploadRecords /> },
                 { key: 'usage', label: 'Token 用量', children: <TokenUsage /> },
+                { key: 'manual', label: '使用手册', children: <UserManual /> },
               ]}
             />
           </div>

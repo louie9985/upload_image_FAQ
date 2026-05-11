@@ -122,16 +122,24 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
+        "rest_framework.permissions.AllowAny",
     ],
 }
 
 CORS_ALLOWED_ORIGINS = [
+    "http://129.211.215.38:3456",
+    "http://localhost:3456",
+    "http://127.0.0.1:3456",
     "http://localhost:5173",
     "http://127.0.0.1:5173",
 ]
+
 CORS_ALLOW_CREDENTIALS = True
+
 CSRF_TRUSTED_ORIGINS = [
+    "http://129.211.215.38:3456",
+    "http://localhost:3456",
+    "http://127.0.0.1:3456",
     "http://localhost:5173",
     "http://127.0.0.1:5173",
 ]

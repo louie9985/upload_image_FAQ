@@ -2,6 +2,8 @@
 
 本项目是一个快速上线版本的企业内部图片问答生成与上传工具，前端使用 React + Ant Design 独立运行，后端使用 Django REST Framework 只提供 API/Admin，后台任务使用 Celery + Redis。
 
+面向终端用户的图文说明见：[用户操作手册（user-manual.md）](./user-manual.md)。
+
 ## 功能范围
 
 - 系统账号密码登录。
